@@ -1,0 +1,36 @@
+[workspace]
+resolver = "2"
+members = [
+    "lightning-node",
+    "lsp-api",
+    "cashu-api",
+    "crates/database",
+    "crates/events",
+    "crates/lightning_node_client",
+    "crates/cashu_internal_client",
+]
+
+[workspace.dependencies]
+env_logger = "0.11.1"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0.113"
+anyhow = "1.0.75"
+tonic = "0.10.2"
+prost = "0.12.3"
+tokio = { version = "1.19.2", features = ["macros", "rt-multi-thread"] }
+tonic-web = "0.10.2"
+envy = "0.4.2"
+dotenv = "0.15.0"
+tokio-stream = "0.1.14"
+log = "0.4.20"
+amqprs = "1.5.2"
+surrealdb = { version = "1.1.1", features = ["kv-mem"] }
+tower = "0.4.13"
+tower-http = { version = "0.5.1", features = ["cors"] }
+axum = "0.7.2"
+bitcoin = "0.31.0"
+chrono = "0.4.31"
+lightning-invoice = "0.29.0"
+rand = "0.8.5"
+
+tonic-build = "0.10.2"
