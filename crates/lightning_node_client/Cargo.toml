@@ -1,0 +1,17 @@
+[package]
+name = "lightning_node_client"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+prost = "0.12.3"
+tonic = "0.10.2"
+tokio = { workspace = true }
+anyhow = { workspace = true }
+tower = { workspace = true }
+async-recursion = "1.0.5"
+
+[build-dependencies]
+tonic-build = { workspace = true }
