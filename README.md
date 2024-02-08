@@ -1,5 +1,6 @@
 # walletka-server
 
+```
 ## Example .env file
 RUST_LOG=info
 
@@ -34,3 +35,4 @@ LIGHTNING_NODE_EXCHANGE="walletka.lightning-node"
 ESPLORA_SERVER_URL=""
 MNEMONIC="dad erupt orient disease airport produce blade duty angle rail question mutual"
 LIGHTNING_NODE_ENDPOINT=""
+```
