@@ -1,0 +1,49 @@
+version: '3.3'
+
+services:
+  cashu-api:
+    image: ghcr.io/walletka/cashu-api:main    
+    env_file:
+      - path: ./.env
+        required: false
+    user: root
+    ports:
+     - 3003:3002
+    networks:
+     - default
+     - infra_default
+    logging:
+      driver: json-file
+  lsp-api:
+    image: ghcr.io/walletka/lsp-api:main 
+    env_file:
+      - path: ./.env
+        required: false
+    networks:
+     - default
+     - infra_default
+    logging:
+      driver: json-file
+  lightning-node:
+    image: ghcr.io/walletka/lightning-node:main 
+    env_file:
+      - path: ./.env
+        required: false
+    user: root
+    ports:
+     - 3002:3000
+     - 9876:9876
+    volumes:
+     - lightning-node-data:/app_data
+    networks:
+     - infra_default
+     - default
+    logging:
+      driver: json-file
+networks:
+  default:
+    driver: overlay
+  infra_default:
+    external: true
+volumes:
+  lightning-node-data:

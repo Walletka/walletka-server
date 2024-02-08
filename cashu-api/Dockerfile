@@ -23,7 +23,7 @@ WORKDIR /app
 COPY . .
 RUN apt-get update -y && apt-get install -y libssl-dev pkg-config protobuf-compiler libprotobuf-dev
 ENV GIT_HASH=a
-RUN cargo build --release
+RUN cargo build --bin $APP_NAME --release
 RUN cp ./target/release/$APP_NAME /bin/server
 
 
