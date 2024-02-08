@@ -18,3 +18,4 @@ Cargo.lock
 
 /target
 /app_data
+.env
