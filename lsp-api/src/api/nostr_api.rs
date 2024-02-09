@@ -22,7 +22,7 @@ pub async fn nip05(
                 Some(user) => match user.npub {
                     Some(npub) => {
                         let pubkey = XOnlyPublicKey::from_bech32(npub).unwrap();
-                        let response = format!("{{ names: {{ {}: {} }} }}", name, pubkey);
+                        let response = format!(r#"{{ "names": {{ "{}": "{}" }} }}"#, name, pubkey);
 
                         Ok(response)
                     }
