@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use axum::{extract::Query, http::StatusCode, Extension};
 use database::surrealdb::engine::remote::ws::Client;
+use nostr_sdk::{secp256k1::XOnlyPublicKey, FromBech32, Keys};
 
 use crate::services::lsp_customer_service::LspCustomerService;
 
@@ -20,7 +21,8 @@ pub async fn nip05(
             match user {
                 Some(user) => match user.npub {
                     Some(npub) => {
-                        let response = format!("{{ names {{ {}: {} }} }}", name, npub);
+                        let pubkey = XOnlyPublicKey::from_bech32(npub).unwrap();
+                        let response = format!("{{ names {{ {}: {} }} }}", name, pubkey);
 
                         Ok(response)
                     }
