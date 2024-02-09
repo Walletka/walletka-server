@@ -1,4 +1,4 @@
-use std::{fmt::format, sync::Arc};
+use std::sync::Arc;
 
 use anyhow::Result;
 use axum::{
@@ -14,8 +14,6 @@ use repository::{
     lsp_customer_repository::LspCustomerRepository, lsp_invoice_repository::LspInvoiceRepository,
 };
 use services::lsp_customer_service::LspCustomerService;
-use tower::ServiceBuilder;
-use tower_http::cors::{Any, CorsLayer};
 
 use crate::{config::LspConfig, services::payment_received_service::PaymentReceivedService};
 
@@ -74,6 +72,7 @@ async fn main() -> Result<()> {
             "/api/lsp/invoice/:alias",
             get(api::lsp_customer_api::get_invoice),
         )
+        .route("/.well-known/nostr.json", get(api::nostr_api::nip05))
         .layer(Extension(lsp_service))
         .layer(Extension(config.clone()));
 
