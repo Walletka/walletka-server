@@ -51,7 +51,7 @@ where
             .query(format!(
                 "SELECT *, name as name, 
                 (SELECT proof.secret as secret FROM used_proof WHERE mint_id = $parent.name).secret as spend_secrets 
-                FROM ONLY mint:{}",
+                FROM ONLY mint:{} LIMIT 1",
                 name
             ))
             .await?
@@ -116,7 +116,7 @@ where
     ) -> Result<InvoiceInfo> {
         let mut res = self
             .db
-            .query("SELECT * FROM ONLY invoice WHERE payment_hash = ($payment_hash)")
+            .query("SELECT * FROM ONLY invoice WHERE payment_hash = ($payment_hash) LIMIT 1")
             .bind(("payment_hash", payment_hash.to_string()))
             .await?;
 
