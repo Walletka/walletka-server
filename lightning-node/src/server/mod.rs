@@ -42,7 +42,7 @@ impl node_server::Node for LightningNodeGrpcServer {
                     .unspendable_punishment_reserve
                     .unwrap_or_default(),
                 feerate_sat_per_1000_weight: c.feerate_sat_per_1000_weight,
-                balance_msat: c.balance_msat,
+                balance_msat: c.outbound_capacity_msat,
                 outbound_capacity_msat: c.outbound_capacity_msat,
                 inbound_capacity_msat: c.inbound_capacity_msat,
                 confirmations_required: c.confirmations_required.unwrap_or_default(),

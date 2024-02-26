@@ -1,3 +1,5 @@
+use std::borrow::Borrow;
+
 use anyhow::{bail, Result};
 use bitcoin::PublicKey;
 use cashu_internal_client::{get_cashu_client, proto::InternalTokenMintRequest};

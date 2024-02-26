@@ -9,12 +9,12 @@ use ldk_node::{
             rand::{rngs::OsRng, RngCore},
             PublicKey,
         },
-        Address,
+        Address, Network,
     },
     io::sqlite_store::SqliteStore,
     lightning::ln::{msgs::SocketAddress, ChannelId, PaymentHash},
     lightning_invoice::Bolt11Invoice,
-    Builder, ChannelConfig, ChannelDetails, Event, Network, Node, NodeError, PeerDetails,
+    Builder, ChannelConfig, ChannelDetails, Event, Node, NodeError, PeerDetails, UserChannelId,
 };
 use tokio::{sync::Mutex, time::sleep};
 
@@ -93,7 +93,7 @@ impl NodeProcessor {
         channel_amount_sats: u64,
         push_to_counterparty_msat: Option<u64>,
         public: bool,
-    ) -> Result<()> {
+    ) -> Result<UserChannelId> {
         let channel_config = Arc::new(ChannelConfig::new());
         let address = if address.is_none() {
             let peer = self
@@ -124,7 +124,7 @@ impl NodeProcessor {
         {
             Some(channel) => Ok(self
                 .node
-                .close_channel(&channel_id, channel.counterparty_node_id)?),
+                .close_channel(&channel.user_channel_id, channel.counterparty_node_id)?),
             None => bail!(NodeError::ChannelClosingFailed),
         }
     }

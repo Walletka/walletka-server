@@ -1,17 +1,17 @@
 use anyhow::Result;
 use events::lightning_node_events::{LightningNodeEvents, PaymentReceivedProcessor};
-use lightning_node_client::LightningNodeGrpcClient;
+use lightning_node_client::proto::node_client::NodeClient;
 use log::{info, warn};
-use tonic::async_trait;
+use tonic::{async_trait, transport::Channel};
 
 struct PaymentReceivedCallback {}
 
 pub struct PaymentReceivedService {
-    pub client: LightningNodeGrpcClient,
+    pub client: NodeClient<Channel>,
 }
 
 impl PaymentReceivedService {
-    pub fn new(client: LightningNodeGrpcClient) -> Self {
+    pub fn new(client: NodeClient<Channel>) -> Self {
         Self { client }
     }
 

@@ -8,7 +8,7 @@ use axum::{
 use database::{config::SurrealDbConfig, init_db};
 use dotenv::dotenv;
 use events::config::RabbitMqConfig;
-use lightning_node_client::LightningNodeGrpcClient;
+use lightning_node_client::get_lightning_node_client;
 use log::info;
 use repository::{
     lsp_customer_repository::LspCustomerRepository, lsp_invoice_repository::LspInvoiceRepository,
@@ -36,7 +36,7 @@ async fn main() -> Result<()> {
 
     let events = events::lightning_node_events::LightningNodeEvents::new(rabbitmq_config).await?;
     let node_client =
-        LightningNodeGrpcClient::new(config.lightning_node_endpoint.clone(), true).await?;
+        get_lightning_node_client(config.lightning_node_endpoint.clone(), true).await?;
 
     let nostr_client = client::nostr_client::NostrClient::from_mnemonic(&config.mnemonic, None);
     nostr_client
