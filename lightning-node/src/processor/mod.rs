@@ -40,6 +40,7 @@ impl NodeProcessor {
         builder.set_storage_dir_path(config.lightning_data_dir.clone());
         builder.set_log_dir_path(config.lightning_data_dir);
         builder.set_log_level(ldk_node::LogLevel::Debug);
+        builder.set_accept_forwards_to_private_channels(true);
         builder.set_listening_addresses(vec![SocketAddress::from_str(format!("0.0.0.0:{}", config.lightning_node_port).as_str()).unwrap()])?;
 
         if config.mnemonic.is_some() {
