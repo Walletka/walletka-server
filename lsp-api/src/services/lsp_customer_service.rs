@@ -1,5 +1,3 @@
-use std::borrow::Borrow;
-
 use anyhow::{bail, Result};
 use bitcoin::PublicKey;
 use cashu_internal_client::{get_cashu_client, proto::InternalTokenMintRequest};
@@ -13,7 +11,7 @@ use log::{info, warn};
 use tonic::transport::Channel;
 
 use crate::{
-    client::{self, nostr_client::NostrClient},
+    client::nostr_client::NostrClient,
     entity::{LspCustomer, LspCustomerConfig, LspInvoice},
     repository::{
         lsp_customer_repository::LspCustomerRepository,

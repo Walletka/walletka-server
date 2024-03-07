@@ -46,12 +46,10 @@ async fn main() -> Result<()> {
 
     let database = init_db(db_config, "walletka", "lsp").await?;
 
-    let payment_received_service = PaymentReceivedService::new(node_client);
-    payment_received_service.subscribe(events);
-
+    
     let customer_repo = LspCustomerRepository::new(database.clone());
     let invoice_repo = LspInvoiceRepository::new(database.clone());
-
+    
     let lsp_service = Arc::new(LspCustomerService::new(
         customer_repo,
         invoice_repo,
@@ -59,6 +57,9 @@ async fn main() -> Result<()> {
         config.lsp_cashu_mint.clone(),
         nostr_client,
     ));
+    
+    let payment_received_service = PaymentReceivedService::new(node_client, lsp_service.clone());
+    payment_received_service.subscribe(events);
 
     info!(
         "Starting rest api server at 0.0.0.0:{}",
