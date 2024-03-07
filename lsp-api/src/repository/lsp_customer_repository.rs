@@ -44,7 +44,7 @@ where
         let mut res = self
             .db
             .query(format!(
-                "UPDATE ONLY customer SET config = ($config) WHERE alias = {}",
+                "UPDATE ONLY customer SET config = ($config) WHERE alias = {} LIMIT 1",
                 alias
             ))
             .bind(("config", lsp_customer_config))
@@ -76,7 +76,7 @@ where
     pub async fn get_customer_by_npub(&self, npub: String) -> Result<Option<LspCustomer>> {
         let mut res = self
             .db
-            .query("SELECT * FROM ONLY customer WHERE npub == ($npub)")
+            .query("SELECT * FROM ONLY customer WHERE npub == ($npub) LIMIT 1")
             .bind(("npub", npub))
             .await?;
 
@@ -98,7 +98,7 @@ where
         let mut res = self
             .db
             .query(format!(
-                "SELECT (SELECT * FROM ONLY ->issued_for->customer) as root FROM invoice:{}",
+                "SELECT (SELECT * FROM ONLY ->issued_for->customer) as root FROM invoice:{} LIMIT 1",
                 payment_hash
             ))
             .await?;

@@ -23,8 +23,8 @@ use cashu_sdk::{
 };
 use database::surrealdb::engine::remote::ws::Client;
 use lightning_node_client::{
+    get_lightning_node_client,
     proto::{CreateBolt11InvoiceRequest, PayInvoiceRequest},
-    LightningNodeGrpcClient,
 };
 use log::info;
 use std::{fmt::Write, str::FromStr, sync::Arc};
@@ -81,10 +81,9 @@ pub async fn get_request_mint(
     config: Extension<Arc<CashuApiConfig>>,
     mint_params: Query<RequestMintParams>,
 ) -> Result<Json<RequestMintResponse>, StatusCode> {
-    let mut node_client =
-        LightningNodeGrpcClient::new(config.lightning_node_endpoint.clone(), false)
-            .await
-            .unwrap();
+    let mut node_client = get_lightning_node_client(config.lightning_node_endpoint.clone(), false)
+        .await
+        .unwrap();
 
     let invoice = match node_client
         .create_bolt11_invoice(CreateBolt11InvoiceRequest {
@@ -301,10 +300,9 @@ pub async fn post_melt(
     }
     let inv = payload.pr.clone();
 
-    let mut node_client =
-        LightningNodeGrpcClient::new(config.lightning_node_endpoint.clone(), false)
-            .await
-            .unwrap();
+    let mut node_client = get_lightning_node_client(config.lightning_node_endpoint.clone(), false)
+        .await
+        .unwrap();
 
     info!("Paying invoice");
     let pay_res = node_client

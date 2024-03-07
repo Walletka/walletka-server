@@ -21,10 +21,6 @@ jobs:
         include:
           - dockerfile: ./lightning-node/Dockerfile
             image: ghcr.io/walletka/lightning-node
-          - dockerfile: ./cashu-api/Dockerfile
-            image: ghcr.io/walletka/cashu-api
-          - dockerfile: ./lsp-api/Dockerfile
-            image: ghcr.io/walletka/lsp-api
 
     permissions:
       contents: read
