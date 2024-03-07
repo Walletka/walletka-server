@@ -9,7 +9,7 @@ use config::CashuApiConfig;
 use database::{config::SurrealDbConfig, init_db};
 use dotenv::dotenv;
 use events::config::RabbitMqConfig;
-use lightning_node_client::LightningNodeGrpcClient;
+use lightning_node_client::get_lightning_node_client;
 use log::info;
 use repositories::cashu_repository::CashuMintReporitory;
 use services::payment_received_service::PaymentReceivedService;
@@ -36,7 +36,7 @@ async fn main() -> Result<()> {
 
     let events = events::lightning_node_events::LightningNodeEvents::new(rabbitmq_config).await?;
     let subscribe_node_client =
-        LightningNodeGrpcClient::new(config.lightning_node_endpoint.clone(), true).await?;
+        get_lightning_node_client(config.lightning_node_endpoint.clone(), true).await?;
 
     let database = init_db(db_config, "walletka", "cashu").await?;
 

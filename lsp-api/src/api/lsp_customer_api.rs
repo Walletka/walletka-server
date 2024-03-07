@@ -5,7 +5,7 @@ use axum::{
 };
 use database::surrealdb::engine::remote::ws::Client;
 use lightning_invoice::Bolt11Invoice;
-use lightning_node_client::{proto::CreateBolt11InvoiceRequest, LightningNodeGrpcClient};
+use lightning_node_client::{get_lightning_node_client, proto::CreateBolt11InvoiceRequest};
 use log::info;
 use std::{str::FromStr, sync::Arc};
 
@@ -82,10 +82,9 @@ pub async fn get_invoice(
         .await
         .unwrap();
 
-    let mut node_client =
-        LightningNodeGrpcClient::new(config.lightning_node_endpoint.clone(), true)
-            .await
-            .unwrap();
+    let mut node_client = get_lightning_node_client(config.lightning_node_endpoint.clone(), true)
+        .await
+        .unwrap();
 
     let invoice_res = node_client
         .create_bolt11_invoice(CreateBolt11InvoiceRequest {

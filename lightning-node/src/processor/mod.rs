@@ -9,12 +9,12 @@ use ldk_node::{
             rand::{rngs::OsRng, RngCore},
             PublicKey,
         },
-        Address,
+        Address, Network,
     },
     io::sqlite_store::SqliteStore,
     lightning::ln::{msgs::SocketAddress, ChannelId, PaymentHash},
     lightning_invoice::Bolt11Invoice,
-    Builder, ChannelConfig, ChannelDetails, Event, Network, Node, NodeError, PeerDetails,
+    Builder, ChannelConfig, ChannelDetails, Event, Node, NodeError, PeerDetails, UserChannelId,
 };
 use tokio::{sync::Mutex, time::sleep};
 
@@ -40,6 +40,7 @@ impl NodeProcessor {
         builder.set_storage_dir_path(config.lightning_data_dir.clone());
         builder.set_log_dir_path(config.lightning_data_dir);
         builder.set_log_level(ldk_node::LogLevel::Debug);
+        builder.set_accept_forwards_to_private_channels(true);
         builder.set_listening_addresses(vec![SocketAddress::from_str(format!("0.0.0.0:{}", config.lightning_node_port).as_str()).unwrap()])?;
 
         if config.mnemonic.is_some() {
@@ -93,7 +94,7 @@ impl NodeProcessor {
         channel_amount_sats: u64,
         push_to_counterparty_msat: Option<u64>,
         public: bool,
-    ) -> Result<()> {
+    ) -> Result<UserChannelId> {
         let channel_config = Arc::new(ChannelConfig::new());
         let address = if address.is_none() {
             let peer = self
@@ -124,7 +125,7 @@ impl NodeProcessor {
         {
             Some(channel) => Ok(self
                 .node
-                .close_channel(&channel_id, channel.counterparty_node_id)?),
+                .close_channel(&channel.user_channel_id, channel.counterparty_node_id)?),
             None => bail!(NodeError::ChannelClosingFailed),
         }
     }

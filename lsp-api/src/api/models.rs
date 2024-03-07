@@ -1,6 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-
 #[derive(Deserialize, Serialize)]
 pub struct LspSignUpRequest {
     pub node_id: Option<String>,
@@ -9,7 +8,7 @@ pub struct LspSignUpRequest {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetInvoiceParams {
-    pub amount: Option<u64>
+    pub amount: Option<u64>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -21,3 +20,10 @@ pub struct GetInvoiceResponse {
     // TODO: find out proper type
     pub routes: Vec<String>,
 }
+
+// Nostr
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Nip05Params {
+    pub name: Option<String>,
+}
+
