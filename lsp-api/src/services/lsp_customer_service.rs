@@ -7,7 +7,7 @@ use lightning_invoice::Bolt11Invoice;
 use lightning_node_client::proto::{
     node_client::NodeClient, OpenChannelRequest, SendKeysendPaymentRequest,
 };
-use log::{info, warn};
+use log::{debug, info, warn};
 use tonic::transport::Channel;
 
 use crate::{
@@ -135,13 +135,14 @@ where
     ) -> Result<()> {
         let customer = self
             .repository
-            .get_customer_by_payment_hash(payment_hash)
+            .get_customer_by_payment_hash(payment_hash.clone())
             .await
             .unwrap();
 
         let customer = if customer.is_some() {
             customer.unwrap()
         } else {
+            debug!("Invoice with payment hash \"{}\" not found", payment_hash);
             return Ok(());
         };
 

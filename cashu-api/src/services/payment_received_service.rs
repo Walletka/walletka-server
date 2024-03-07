@@ -21,7 +21,7 @@ impl PaymentReceivedService {
 
             events
                 .subscribe_received_payments(
-                    "walletka.lsp.received_payments",
+                    "walletka.cashu.received_payments",
                     PaymentReceivedCallback {},
                 )
                 .await

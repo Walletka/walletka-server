@@ -71,7 +71,9 @@ where
     ) -> Result<(), anyhow::Error> {
         let mut client = self.client.clone();
 
-        info!("Final callback, payment received!");
+        info!("Payment received!");
+        info!("Payment hash: {}", payment_hash);
+        info!("Amount: {}msat", amount_msat);
 
         match self
             .lsp_customer_service
