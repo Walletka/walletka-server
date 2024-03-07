@@ -98,7 +98,7 @@ where
         let mut res = self
             .db
             .query(format!(
-                "SELECT (SELECT * FROM ONLY ->issued_for->customer) as root FROM invoice:{} LIMIT 1",
+                "SELECT (SELECT * FROM ONLY ->issued_for->customer LIMIT 1) as root FROM invoice:{}",
                 payment_hash
             ))
             .await?;
