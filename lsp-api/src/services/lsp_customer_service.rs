@@ -186,6 +186,7 @@ where
                                 Ok(())
                             }
                             Err(_) => {
+                                info!("Open channel failed, sending Cashu");
                                 self.mint_and_send_token(
                                     &customer,
                                     self.cashu_mint.clone(),
