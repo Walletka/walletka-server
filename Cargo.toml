@@ -4,10 +4,11 @@ members = [
     "lightning-node",
     "lsp-api",
     "cashu-api",
+    "swap-api",
     "crates/database",
     "crates/events",
     "crates/lightning_node_client",
-    "crates/cashu_internal_client",
+    "crates/cashu_internal_client", 
 ]
 
 [workspace.dependencies]

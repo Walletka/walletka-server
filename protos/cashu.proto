@@ -2,7 +2,7 @@ syntax = "proto3";
 
 import "google/protobuf/empty.proto";
 
-package cashu_service;
+package cashu_grpc_service;
 
 service Cashu {
     rpc InternalTokenMint (InternalTokenMintRequest) returns (InternalTokenMintResponse);

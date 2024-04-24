@@ -1,6 +1,7 @@
-use std::sync::Arc;
+use std::{net::SocketAddr, sync::Arc};
 
 use anyhow::Result;
+use api::grpc_api::CashuGrpcService;
 use axum::{
     routing::{get, post},
     Extension, Router,
@@ -16,7 +17,7 @@ use services::payment_received_service::PaymentReceivedService;
 use tower::ServiceBuilder;
 use tower_http::cors::{Any, CorsLayer};
 
-use crate::api::cashu_api;
+use crate::api::{cashu_api, grpc_api::cashu_grpc_api::cashu_server::CashuServer};
 
 mod api;
 mod cashu;
@@ -74,16 +75,26 @@ async fn main() -> Result<()> {
         .layer(Extension(Arc::new(config.clone())))
         .into_make_service();
 
-    //tokio::spawn(async move {
-    info!(
-        "Starting rest api server at 0.0.0.0:{}",
-        config.cashu_api_port
-    );
-    let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", config.cashu_api_port))
-        .await
-        .unwrap();
-    axum::serve(listener, rest_app).await.unwrap();
-    //});
+    tokio::spawn(async move {
+        info!(
+            "Starting rest api server at 0.0.0.0:{}",
+            config.cashu_api_port
+        );
+        let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", config.cashu_api_port))
+            .await
+            .unwrap();
+        axum::serve(listener, rest_app).await.unwrap();
+    });
+
+    info!("Starting grpc server at 0.0.0.0:{}", config.cashu_grpc_port);
+    let addr = SocketAddr::from(([0, 0, 0, 0], config.cashu_grpc_port));
+    tonic::transport::Server::builder()
+        .accept_http1(true)
+        .add_service(tonic_web::enable(CashuServer::new(CashuGrpcService {
+            cashu_service: cashu.clone(),
+        })))
+        .serve(addr)
+        .await?;
 
     Ok(())
 }

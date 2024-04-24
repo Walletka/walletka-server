@@ -1,21 +1,22 @@
 use std::sync::Arc;
 
-use bank_grpc_api::*;
+use cashu_grpc_api::*;
+use database::surrealdb;
 use surrealdb::engine::remote::ws::Client;
 use tonic::{Request, Response, Status};
 
 use crate::cashu::CashuService;
 
-pub mod bank_grpc_api {
-    tonic::include_proto!("bank_service");
+pub mod cashu_grpc_api {
+    tonic::include_proto!("cashu_grpc_service");
 }
 
-pub struct BankService {
+pub struct CashuGrpcService {
     pub cashu_service: Arc<CashuService<Client>>,
 }
 
 #[tonic::async_trait]
-impl bank_server::Bank for BankService {
+impl cashu_server::Cashu for CashuGrpcService {
     async fn internal_token_mint(
         &self,
         request: Request<InternalTokenMintRequest>,

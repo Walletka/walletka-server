@@ -5,7 +5,7 @@ use tonic::transport::Channel;
 use tower::ServiceBuilder;
 
 pub mod proto {
-    tonic::include_proto!("cashu_service");
+    tonic::include_proto!("cashu_grpc_service");
 }
 
 pub async fn get_cashu_client(address: String, keep_alive: bool) -> Result<CashuClient<Channel>> {

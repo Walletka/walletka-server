@@ -1,5 +1,5 @@
 [package]
-name = "cashu-api"
+name = "swap-api"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,8 +8,6 @@ edition = "2021"
 [dependencies]
 tokio = { workspace = true }
 tonic = { workspace = true }
-tonic-web = { workspace = true }
-prost = { workspace = true }
 env_logger = { workspace = true }
 dotenv = { workspace = true }
 log = { workspace = true }
@@ -18,14 +16,10 @@ anyhow = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 axum = { workspace = true }
-tower-http = { workspace = true }
-tower = { workspace = true }
-bitcoin = "0.31.0" # todo: -> workspace?
-lightning_node_client = { path = "../crates/lightning_node_client" }
 events = { path = "../crates/events" }
 database = { path = "../crates/database" }
-cashu-sdk = { git = "https://github.com/Walletka/cashu-crab", branch = "cashu-sdk-kotlin-android", default-features = false, features = ["mint", "wallet"] }
+lightning_node_client = { path = "../crates/lightning_node_client" }
+
 
 [build-dependencies]
 lightning_node_client = { path = "../crates/lightning_node_client" }
-tonic-build = { workspace = true }
