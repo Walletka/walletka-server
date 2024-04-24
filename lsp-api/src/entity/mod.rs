@@ -34,7 +34,7 @@ pub struct LspCustomerConfig {
 impl Default for LspCustomerConfig {
     fn default() -> Self {
         Self {
-            min_channel_size_sat: 40_000,
+            min_channel_size_sat: 20_000,
             include_onchain_fee: false,
             enable_ecash: true,
             max_ecash_receive_sat: 210_000_000_000,
